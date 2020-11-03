@@ -1,30 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
-import CBoard from '../components/CBoard';
-import './BoardView.css';
+import CBoard from "../components/CBoard";
+import "./BoardView.scss";
+import { getTasks } from "../utils/api";
+import { tasksSelector } from "../store/selectors";
 
-const mockData = [
-    {
-      id: 1,
-      name : "Eat",
-      closed: true,
-      timeStart: '2020-10-13T21:34:47.458Z',
-      timeEnd: '2020-10-13T21:35:47.458Z'
-    }, {
-      id: 2,
-      name : "Sleep",
-      closed: false,
-      timeStart: '2020-10-13T21:34:47.458Z'
-    }, {
-      id: 3,
-      name : "Code",
-      closed: false,
-      timeStart: '2020-10-13T21:34:47.458Z'
-    }
-  ]
+const BoardView = ({ fetchTasks, tasks = [] }) => {
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+  return <CBoard tasks={tasks} />;
+};
 
-function BoardView(){
-    return <CBoard tasks={mockData} />;
-}
+const mapStateToProps = (state) => ({
+  tasks: tasksSelector(state),
+});
 
-export default BoardView;
+const mapDispatchToProps = (dispatch) => ({
+  fetchTasks: () => getTasks(dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BoardView);

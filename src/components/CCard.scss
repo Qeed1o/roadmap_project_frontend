@@ -1,0 +1,28 @@
+@import '../styles/colors.scss';
+
+div.task-card{
+    width: auto;
+    height: 25vh;
+    margin: 5px 10px;
+    background-color: $task-bgcolor;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,.3);
+
+    & > hr{
+        width: 50%;
+        border: 1px solid black;
+    }
+}
+
+div.high_priority{
+    grid-column: 1/3;
+    background-color: $task-hiprio;
+}
+
+div.closed{
+    background-color: $task-closed;
+}
