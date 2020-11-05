@@ -4,8 +4,8 @@ div.board{
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-rows: max-content;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     justify-content: center;
     align-items: center;
 }
