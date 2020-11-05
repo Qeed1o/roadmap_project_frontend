@@ -26,7 +26,7 @@ const renderTasks = (data) => {
 
 function CBoard({ tasks }) {
   const renderedTasks = renderTasks(tasks);
-  return <div class="board">{renderedTasks}</div>;
+  return <div className="board">{renderedTasks}</div>;
 }
 
 export default CBoard;

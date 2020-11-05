@@ -1,8 +1,11 @@
-import { GET_TASKS } from "./actionTypes";
+import { GET_TASKS, SET_SEARCH_VALUE } from "./actionTypes";
 
-export const storeTasks = (content) => ({
+export const storeTasks = (payload) => ({
   type: GET_TASKS,
-  payload: {
-    content,
-  },
+  payload,
+});
+
+export const setSearchValue = (payload) => ({
+  type: SET_SEARCH_VALUE,
+  payload,
 });

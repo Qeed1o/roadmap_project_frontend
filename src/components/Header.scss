@@ -1,0 +1,7 @@
+@import '../styles/colors.scss';
+
+div.header{
+    width: 100%;
+    height: clamp(100px, 10vh, 10vh);
+    background-color: $accent-color;
+}

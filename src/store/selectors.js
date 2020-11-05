@@ -5,3 +5,8 @@ export const tasksSelector = createSelector(
   rootSelector,
   (store) => store.tasks
 );
+
+export const selectSearchValue = createSelector(
+  rootSelector,
+  (store) => store.searchValue
+);
