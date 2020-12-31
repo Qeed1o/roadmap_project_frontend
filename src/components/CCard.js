@@ -1,9 +1,5 @@
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-
-import close_icon from "../assets/close.png";
+import React from "react";
 import "./CCard.scss";
-import { closeTask as closeTaskAction } from "../utils/api";
 
 const isClosedElement = (timeEnd) => (
   <>
@@ -25,35 +21,28 @@ const CCard = ({
   timeStart,
   timeEnd = null,
   classes = [],
-  closeTask,
-}) => {
-  const handleClick = useCallback(() => {
-    closeTask(id);
-    // eslint-disable-next-line
-  }, [closeTask]);
+  isActive,
 
-  return (
-    <div className="taskcard-wrapper">
-      <div className={`task-card id-${id} ${classes}`}>
-        <div className="actions">
-          <div className="action" onClick={handleClick}>
-            <img src={close_icon} alt="close"></img>
-          </div>
-        </div>
-        <div className="info-wrapper">
-          <p className="time">Started: {timeStart}</p>
-          <hr />
-          {tooltipElement(name, id)}
-          {timeEnd ? isClosedElement(timeEnd) : ""}
-        </div>
+  onCardClick,
+}) => (
+  <div className="taskcard-wrapper">
+    <div
+      className={`task-card id-${id} ${
+        isActive ? "task-card-active" : ""
+      } ${classes}`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onCardClick();
+      }}
+    >
+      <div className="info-wrapper">
+        <p className="time">Started: {timeStart}</p>
+        <hr />
+        {tooltipElement(name, id)}
+        {timeEnd ? isClosedElement(timeEnd) : ""}
       </div>
     </div>
-  );
-};
-
-const mapStateToProps = null;
-const mapDispatchToProps = (dispatch) => ({
-  closeTask: (id) => closeTaskAction(id, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CCard);
+  </div>
+);
+export default CCard;

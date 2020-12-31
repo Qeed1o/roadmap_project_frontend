@@ -1,4 +1,4 @@
-import { GET_TASKS, SET_SEARCH_VALUE } from "./actionTypes";
+import { GET_TASKS, SET_SEARCH_VALUE, SET_CURRENT_TASK } from "./actionTypes";
 
 const initialState = {
   tasks: [],
@@ -17,6 +17,13 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         searchValue: payload,
+      };
+    }
+
+    case SET_CURRENT_TASK: {
+      return {
+        ...state,
+        currentTask: payload,
       };
     }
 

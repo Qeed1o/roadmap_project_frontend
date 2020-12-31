@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
+import { connect } from "react-redux";
+
+import { setCurrentCard as setCurrentCardAction } from "../store/actionCreators";
 
 import "./CBoard.scss";
 import CCard from "./CCard";
 
 const formatTime = (time) => {
   const date = new Date(time);
-  return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const hours = `${date.getHours()}`.padStart(2, "0");
+  const minutes = `${date.getMinutes()}`.padStart(2, "0");
+  const seconds = `${date.getSeconds()}`.padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
 };
 
 const renderTask = (value) => {
@@ -13,7 +19,9 @@ const renderTask = (value) => {
   return (
     <CCard
       {...value}
+      onCardClick={() => value.onClick(value)}
       timeStart={formatTime(timeStart)}
+      key={`id-${value.id}`}
       timeEnd={timeEnd ? formatTime(timeEnd) : null}
     />
   );
@@ -24,9 +32,30 @@ const renderTasks = (data) => {
   return tasks;
 };
 
-function CBoard({ tasks }) {
-  const renderedTasks = renderTasks(tasks);
+function CBoard({ tasks, setCurrentCard }) {
+  const onCardClick = useCallback(
+    (card) => {
+      setCurrentCard(card.id);
+    },
+    [setCurrentCard]
+  );
+
+  const mappedTasks = useMemo(
+    () =>
+      tasks.map((task) => ({
+        ...task,
+        onClick: onCardClick,
+      })),
+    [tasks, onCardClick]
+  );
+  const renderedTasks = renderTasks(mappedTasks);
+
   return <div className="board">{renderedTasks}</div>;
 }
 
-export default CBoard;
+const mapStateToProps = null;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentCard: (id) => dispatch(setCurrentCardAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CBoard);

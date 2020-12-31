@@ -1,4 +1,4 @@
-import { storeTasks } from "../store/actionCreators";
+import { storeTasks, setCurrentCard } from "../store/actionCreators";
 import apiCalls from "./apiCalls";
 
 export const getTasks = async (dispatch) => {
@@ -7,11 +7,22 @@ export const getTasks = async (dispatch) => {
 };
 
 export const closeTask = async (id, dispatch) => {
-  await apiCalls.closeTask(id);
-  await getTasks(dispatch);
+  const { data: { list } = {} } = await apiCalls.closeTask(id);
+  dispatch(storeTasks(list));
 };
 
 export const createTask = async (name, dispatch) => {
-  await apiCalls.createTask(name);
-  await getTasks(dispatch);
+  const { data: { list } = {} } = await apiCalls.createTask(name);
+  dispatch(storeTasks(list));
+};
+
+export const makeActive = async (id, dispatch) => {
+  const { data: { list } = {} } = await apiCalls.setActive(id);
+  dispatch(storeTasks(list));
+};
+
+export const deleteTask = async (id, dispatch) => {
+  const { data: { list } = {} } = await apiCalls.deleteTask(id);
+  dispatch(setCurrentCard({}));
+  dispatch(storeTasks(list));
 };

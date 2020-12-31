@@ -10,3 +10,7 @@ export const selectSearchValue = createSelector(
   rootSelector,
   (store) => store.searchValue
 );
+
+export const selectCurrentCard = createSelector(rootSelector, (store) =>
+  store.tasks.find(({ id }) => id === store.currentTask)
+);

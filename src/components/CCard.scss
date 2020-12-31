@@ -2,9 +2,13 @@
 
 div.taskcard-wrapper{
     width: 100%;
-    height: 100%;
-    padding: auto;
-    margin: auto;
+        height: 100%;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all .25s ease;
 
     .tooltip {
         position: relative;
@@ -46,26 +50,31 @@ div.taskcard-wrapper{
         // float: left;
         // margin-top: 15%;
         // margin-left: 15%;
-
-
     }
 
     & > div.task-card{
-        width: 80%;
-        height: 80%;
-        margin: auto;
-        margin-top: 10%;
+        width: 300px;
+    height: 300px;
+        
         background-color: $task-bgcolor;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         border-radius: 5px;
+        margin: 5px;
         box-shadow: 0 0 15px rgba(0,0,0,.3);
+        opacity: .75;
+        transition: opacity .5s ease-in;
     
         & > .info-wrapper {
-            & > h1{
+            & h1{
                 font-size: clamp(20px, 26px, 32px);
+                text-overflow: ellipsis;
+                overflow: hidden; 
+                width: 20vw; 
+                height: 1.2em; 
+                white-space: nowrap;
             }
         
             & > p {
@@ -76,24 +85,12 @@ div.taskcard-wrapper{
                 border: 1px solid black;
             }
         }
+    }
 
-        
-        
-        
-
-        & > .actions {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            width: auto;
-            height: 10%;
-            margin-left: 70%;
-
-            & > .action img {
-                width: 24px;
-                height: 24px;
-            }
-        }
+    & > div.task-card-active {
+        opacity: unset;
+        // background-color: red;
+        margin: unset;
     }
     
     & > div.high_priority{
