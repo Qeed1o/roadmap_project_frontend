@@ -1,0 +1,21 @@
+@import '../../styles/colors.scss';
+
+div.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  min-height: 200px;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: $accent-color;
+  opacity: 0.6;
+  border-radius: 8px;
+}
+
+div.active {
+  opacity: 1;
+}
+
+div.card:hover {
+  opacity: 0.9;
+}
