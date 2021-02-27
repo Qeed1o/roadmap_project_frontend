@@ -1,0 +1,10 @@
+@import '../../styles/colors.scss';
+
+div.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $action-color;
+  border-radius: 8px;
+  font-weight: 700;
+}

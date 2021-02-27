@@ -1,0 +1,27 @@
+@import '../../../styles/colors.scss';
+
+div.modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .modal-content {
+    max-height: 70vh;
+    max-width: 60vw;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: $modal-color;
+
+    & > * {
+      max-width: 60vw;
+      max-height: 70vh;
+    }
+  }
+}

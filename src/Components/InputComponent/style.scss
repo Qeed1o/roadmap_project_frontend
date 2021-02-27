@@ -1,0 +1,21 @@
+@import '../../styles/colors.scss';
+
+div.input {
+  height: 40px;
+  border: 1px solid $text-color;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > input {
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    background: none;
+    color: $text-color;
+    text-align: center;
+  }
+}
