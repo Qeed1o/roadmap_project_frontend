@@ -6,11 +6,14 @@ div.modal {
   position: fixed;
   top: 0;
   left: 0;
+  visibility: hidden;
+  opacity: 0;
   z-index: 999;
   backdrop-filter: blur(2px);
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.15s ease-in;
 
   & > .modal-content {
     max-height: 70vh;
@@ -24,4 +27,9 @@ div.modal {
       max-height: 70vh;
     }
   }
+}
+
+div.shown {
+  opacity: 1;
+  visibility: visible;
 }

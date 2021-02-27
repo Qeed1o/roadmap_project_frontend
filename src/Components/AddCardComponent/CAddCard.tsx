@@ -3,11 +3,11 @@ import { CAddTaskModal } from '../AddTaskModal';
 import './style.scss';
 
 export const CAddCard = () => {
-  const [isModalHidden, setIsModalHidden] = useState<boolean>(false);
+  const [isModalShowed, setIsModalShowed] = useState<boolean>(false);
   return (
     <>
-      <CAddTaskModal isHidden={isModalHidden} setIsHidden={setIsModalHidden} />
-      <div className="card card-add" onClick={() => setIsModalHidden(true)}>
+      <CAddTaskModal isShowed={isModalShowed} setIsShowed={setIsModalShowed} />
+      <div className="card card-add" onClick={() => setIsModalShowed(true)}>
         <div className="plus-button-wrapper">
           <div className="plus-button">+</div>
         </div>

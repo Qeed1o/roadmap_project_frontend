@@ -24,15 +24,10 @@ const CAddTask = ({ createTaskAction }: Props) => {
 
   const createTask = useCallback(() => {
     if (taskName) createTaskAction(taskName);
-  }, [taskName]);
+  }, [taskName, createTaskAction]);
 
   return (
-    <div
-      className="add-task-modal"
-      onClick={(e: React.SyntheticEvent) => {
-        e.stopPropagation();
-      }}
-    >
+    <div className="add-task-modal">
       <div className="name-input">
         <CInput
           inputProps={{

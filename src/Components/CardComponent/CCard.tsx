@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CTaskModal } from '../TaskModalComponent';
 import './style.scss';
 
 interface Props {
@@ -19,18 +20,26 @@ export const CCard = ({
   timeStart,
 }: Props) => {
   const [styles, setStyles] = useState<string>('card');
+  const [isModalShowed, setIsModalShowed] = useState<boolean>(false);
 
   useEffect(() => {
     if (isActive) setStyles(`${styles} active`);
   }, [isActive, styles]);
 
   return (
-    <div className={styles}>
-      <h1>{name}</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem
-        sunt fugit tempore voluptatem blanditiis saepe dicta.
-      </p>
-    </div>
+    <>
+      <CTaskModal
+        isShowed={isModalShowed}
+        setIsShowed={setIsModalShowed}
+        childProps={{ name, id, isActive, isClosed, timeEnd, timeStart }}
+      />
+      <div className={styles} onClick={() => setIsModalShowed(true)}>
+        <h1>{name}</h1>
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          Exercitationem sunt fugit tempore voluptatem blanditiis saepe dicta.
+        </p>
+      </div>
+    </>
   );
 };

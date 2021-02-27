@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './style.scss';
 
 interface Props {
-  isHidden: boolean;
-  setIsHidden: (isHidden: boolean) => void;
+  isShowed: boolean;
+  setIsShowed: (isShowed: boolean) => void;
+  childProps?: { [key: string]: any };
 }
 
 // @ts-ignore
-export const withModal = (Child: any) => ({ isHidden, setIsHidden }: Props) => {
-  return isHidden ? (
-    <div className="modal" onClick={() => setIsHidden(!isHidden)}>
-      <div className="modal-content">
-        <Child />
+export const withModal = (Child: any) => ({
+  isShowed,
+  setIsShowed,
+  childProps,
+}: Props) => {
+  return (
+    <div
+      className={`modal ${isShowed ? 'shown' : ''}`}
+      onClick={() => setIsShowed(!isShowed)}
+    >
+      <div
+        className="modal-content"
+        onClick={(e: React.SyntheticEvent) => {
+          e.stopPropagation();
+        }}
+      >
+        <Child {...childProps} />
       </div>
     </div>
-  ) : (
-    <></>
   );
 };
