@@ -2,25 +2,49 @@
 
 div.add-task-modal {
   width: 50vw;
-  height: 20vh;
+  height: 40vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: column;
   align-items: center;
+  border: 3px solid $accent-color;
+  border-radius: 8px;
 
   & > .button {
     width: 90%;
-    height: 32px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    height: 42px;
   }
 
-  & > .name-input {
+  & > div.new-task-input {
     width: 90%;
 
     & > div {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      border: 0;
+      border-bottom: 1px solid white;
+      border-radius: 0;
+      & > input {
+        text-align: start;
+      }
+    }
+  }
+
+  & > div.desc {
+    height: 50%;
+    & > textarea {
+      padding: 0;
+      margin: 0;
+      border: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 16px;
+      background-color: $modal-color;
+      resize: none;
+      color: white;
+      border-bottom: 1px solid white;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 }

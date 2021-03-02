@@ -9,32 +9,41 @@ import { CInput } from '../InputComponent';
 import './style.scss';
 
 interface Props {
-  createTaskAction: (name: string) => void;
+  createTaskAction: (task: ICreateTask) => void;
+}
+interface ICreateTask {
+  name: string;
+  desc: string;
 }
 
 const mapStateToProps = (state: { [key: string]: any }) => ({});
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<{ [key: string]: any }, void, Action>,
 ) => ({
-  createTaskAction: (name: string) => createTask(name, dispatch),
+  createTaskAction: (task: ICreateTask) => createTask(task, dispatch),
 });
 
 const CAddTask = ({ createTaskAction }: Props) => {
   const [taskName, setTaskName] = useState<string>('');
+  const [taskDesc, setTaskDesc] = useState<string>('');
 
   const createTask = useCallback(() => {
-    if (taskName) createTaskAction(taskName);
-  }, [taskName, createTaskAction]);
+    if (taskName) {
+      setTaskName('');
+      setTaskDesc('');
+      createTaskAction({ name: taskName, desc: taskDesc });
+    }
+  }, [taskName, createTaskAction, taskDesc]);
 
   return (
     <div className="add-task-modal">
-      <div className="name-input">
+      <div className="new-task-input name">
         <CInput
           inputProps={{
             type: 'text',
             name: 'name',
             id: 'new-task-name',
-            placeholder: 'task name',
+            placeholder: 'Name',
             autoComplete: 'off',
             value: taskName,
             // @ts-ignore TODO: fix it.
@@ -42,7 +51,16 @@ const CAddTask = ({ createTaskAction }: Props) => {
           }}
         />
       </div>
-      <CButton label="Create" onClick={createTask} />
+      <div className="new-task-input desc">
+        <textarea
+          placeholder="Description"
+          value={taskDesc}
+          // @ts-ignore
+          onChange={(e: React.SyntheticEvent) => setTaskDesc(e.target.value)}
+          name="new-task-desc"
+        ></textarea>
+      </div>
+      <CButton label="Create" onClick={createTask} isDisabled={!taskName} />
     </div>
   );
 };

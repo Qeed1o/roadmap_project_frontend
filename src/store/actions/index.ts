@@ -7,6 +7,10 @@ interface Action {
   type: string;
   payload: any;
 }
+interface ICreateTask {
+  name: string;
+  desc: string;
+}
 type Dispatch = ThunkDispatch<{ [key: string]: any }, void, Action>;
 
 export const fetchTasks = async (dispatch: Dispatch) => {
@@ -17,8 +21,24 @@ export const fetchTasks = async (dispatch: Dispatch) => {
   });
 };
 
-export const createTask = async (name: string, dispatch: Dispatch) => {
-  const { list } = await api.createTask(name);
+export const createTask = async (task: ICreateTask, dispatch: Dispatch) => {
+  const { list } = await api.createTask(task);
+  dispatch({
+    type: STORE_TASKS,
+    payload: list,
+  });
+};
+
+export const toggleTaskActiveById = async (id: string, dispatch: Dispatch) => {
+  const { list } = await api.toggleActiveById(id);
+  dispatch({
+    type: STORE_TASKS,
+    payload: list,
+  });
+};
+
+export const deleteTaskById = async (id: string, dispatch: Dispatch) => {
+  const { list } = await api.deleteTaskById(id);
   dispatch({
     type: STORE_TASKS,
     payload: list,

@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { CAddCard } from '../../Components/AddCardComponent';
 import { CCard } from '../../Components/CardComponent';
+import { CTaskModal } from '../../Components/TaskModalComponent';
 
 import { fetchTasks } from '../../store/actions';
 import { selectTasks } from '../../store/selectors';
@@ -20,6 +21,7 @@ interface State {
 
 interface TaskCard {
   id: string;
+  description: string;
   isActive: boolean;
   isClosed: boolean;
   name: string;
@@ -42,6 +44,14 @@ export const VBoard = connect(
   mapDispatchToProps,
 )(({ tasks, fetchTasks }: Props) => {
   const [taskCards, setTaskCards] = useState<TaskCard[] | undefined>();
+  const [isModalShowed, setIsModalShowed] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<object>({});
+
+  const showModal = useCallback((data) => {
+    setIsModalShowed(true);
+    setModalData(data);
+  }, []);
+
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
@@ -53,12 +63,17 @@ export const VBoard = connect(
   const cards = useMemo(
     () =>
       taskCards?.map((task, index) => (
-        <CCard key={`card-${index}`} {...task} />
+        <CCard key={`card-${index}`} {...task} showModal={showModal} />
       )),
-    [taskCards],
+    [taskCards, showModal],
   );
   return (
     <div className="board">
+      <CTaskModal
+        isShowed={isModalShowed}
+        setIsShowed={setIsModalShowed}
+        childProps={modalData}
+      />
       {cards}
       <CAddCard />
     </div>

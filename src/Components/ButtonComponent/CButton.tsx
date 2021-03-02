@@ -3,12 +3,23 @@ import './style.scss';
 
 interface Props {
   label: string;
+  isDisabled?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
-export const CButton = ({ label, onClick }: Props) => {
+export const CButton = ({
+  className,
+  label,
+  onClick,
+  isDisabled = false,
+}: Props) => {
+  const classNames = `button${isDisabled ? ' disabled' : ''} ${className}`;
   return (
-    <div className="button" onClick={onClick}>
+    <div
+      className={classNames}
+      onClick={() => !isDisabled && onClick && onClick()}
+    >
       {label}
     </div>
   );
