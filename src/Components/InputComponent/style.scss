@@ -1,12 +1,26 @@
 @import '../../styles/colors.scss';
 
-div.input {
+div.input-wrapper {
   height: 40px;
   border: 1px solid $text-color;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  & > .input {
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    background: none;
+    color: $accent-color;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
 
   & > input {
     font-size: 18px;
@@ -16,6 +30,5 @@ div.input {
     border: none;
     background: none;
     color: $text-color;
-    text-align: center;
   }
 }

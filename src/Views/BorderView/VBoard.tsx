@@ -21,7 +21,7 @@ interface State {
 
 interface TaskCard {
   id: string;
-  description: string;
+  desc: string;
   isActive: boolean;
   isClosed: boolean;
   name: string;
@@ -43,7 +43,6 @@ export const VBoard = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(({ tasks, fetchTasks }: Props) => {
-  const [taskCards, setTaskCards] = useState<TaskCard[] | undefined>();
   const [isModalShowed, setIsModalShowed] = useState<boolean>(false);
   const [modalData, setModalData] = useState<object>({});
 
@@ -56,16 +55,12 @@ export const VBoard = connect(
     fetchTasks();
   }, [fetchTasks]);
 
-  useEffect(() => {
-    setTaskCards(tasks);
-  }, [tasks]);
-
   const cards = useMemo(
     () =>
-      taskCards?.map((task, index) => (
+      tasks?.map((task, index) => (
         <CCard key={`card-${index}`} {...task} showModal={showModal} />
       )),
-    [taskCards, showModal],
+    [tasks, showModal],
   );
   return (
     <div className="board">

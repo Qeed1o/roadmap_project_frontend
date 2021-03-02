@@ -5,6 +5,13 @@ interface ICreateTask {
   name: string;
   desc: string;
 }
+interface Task {
+  isClosed?: boolean;
+  isActive?: boolean;
+  name?: string;
+  desc?: string;
+  id: string;
+}
 
 const deleteTaskById = async (id: string) =>
   (
@@ -12,12 +19,18 @@ const deleteTaskById = async (id: string) =>
       method: 'POST',
     })
   ).json();
-const toggleActiveById = async (id: string) =>
+const updateTask = async (task: Task) =>
   (
-    await fetch(`${BACKEND_URI}/active/${id}`, {
+    await fetch(`${BACKEND_URI}/task/${task.id}`, {
       method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(task),
     })
   ).json();
+
 const fetchTasks = async () => (await fetch(`${BACKEND_URI}`)).json();
 const createTask = async ({ name, desc }: ICreateTask) =>
   (
@@ -33,5 +46,5 @@ const createTask = async ({ name, desc }: ICreateTask) =>
     })
   ).json();
 
-const api = { fetchTasks, createTask, toggleActiveById, deleteTaskById };
+const api = { fetchTasks, createTask, updateTask, deleteTaskById };
 export default api;

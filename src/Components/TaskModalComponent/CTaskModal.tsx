@@ -1,7 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { leadingZerosToTime } from '../../utils';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { updateTask } from '../../store/actions';
 import { withModal } from '../../utils/hooks';
-import { CButton } from '../ButtonComponent';
+import CModalCard from '../ModalCardComponent/CModalCard';
 import './style.scss';
 
 interface Props {
@@ -11,96 +14,56 @@ interface Props {
   name: string;
   timeEnd: string;
   timeStart: string;
-  description: string;
+  desc: string;
+  updateTask: (task: Task) => void;
+}
+interface Task {
+  isClosed?: boolean;
+  isActive?: boolean;
+  name?: string;
+  desc?: string;
+  id: string;
 }
 
 const CTask = ({
   isActive,
-  description,
+  desc,
   id,
   isClosed,
   name,
   timeEnd,
   timeStart,
+  updateTask,
 }: Props) => {
-  const [isChanged, setIsChanged] = useState<boolean>(false);
-  const [isClosedToSave, setIsClosed] = useState<boolean>(isClosed);
-  const [isActiveToSave, setIsActive] = useState<boolean>(isActive);
-  const startTime = new Date(timeStart);
-  const endTime = timeEnd ? new Date(timeEnd) : false;
-
-  useEffect(() => {
-    setIsActive(isActive);
-    setIsClosed(isClosed);
-  }, [isClosed, isActive]);
-
-  const isActiveTextColor = useMemo(() => (isActiveToSave ? 'green' : 'red'), [
-    isActiveToSave,
-  ]);
-  const isClosedTextColor = useMemo(() => (isClosedToSave ? 'green' : 'red'), [
-    isClosedToSave,
-  ]);
   return (
     <div className="task-modal">
-      <div className="title">
-        <h1>
-          <u>{name}</u>
-        </h1>
-      </div>
-      <div className="info-wrapper">
-        <div className="info">
-          <pre>ID</pre>
-          <u>{id}</u>
-        </div>
-        <textarea contentEditable={false} value={description}></textarea>
-        <div className="info">
-          <pre>Active</pre>
-          <u
-            className={isActiveTextColor}
-            onClick={() => {
-              setIsActive(!isActiveToSave);
-              !isChanged && setIsChanged(true);
-            }}
-          >{`${isActiveToSave}`}</u>
-        </div>
-        <div className="info">
-          <pre>Closed</pre>
-          <u
-            className={isClosedTextColor}
-            onClick={() => {
-              setIsClosed(!isClosedToSave);
-              !isChanged && setIsChanged(true);
-            }}
-          >{`${isClosedToSave}`}</u>
-        </div>
-        <div className="info">
-          <pre>Started</pre>
-          <u>
-            {startTime.toLocaleDateString()}-
-            {leadingZerosToTime('' + startTime.getHours())}:
-            {leadingZerosToTime('' + startTime.getMinutes())}:
-            {leadingZerosToTime('' + startTime.getSeconds())}
-          </u>
-        </div>
-        {endTime ? (
-          <div className="info">
-            <pre>timeEnd</pre>
-            <u>
-              {endTime.toLocaleDateString()}-
-              {leadingZerosToTime('' + endTime.getHours())}:
-              {leadingZerosToTime('' + endTime.getMinutes())}:
-              {leadingZerosToTime('' + endTime.getSeconds())}
-            </u>
-          </div>
-        ) : (
-          ''
-        )}
-      </div>
-      <div className="actions">
-        <CButton label="Save" className="save" />
-      </div>
+      <CModalCard
+        actionButtonLabel="Save"
+        onActionButtonClick={(args) => {
+          updateTask(args);
+        }}
+        initialState={{
+          isActive,
+          desc,
+          id,
+          isClosed,
+          name,
+          timeEnd,
+          timeStart,
+        }}
+      ></CModalCard>
     </div>
   );
 };
 
-export const CTaskModal = withModal(CTask);
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<{ [key: string]: any }, void, Action>,
+) => ({
+  updateTask: (task: Task) => updateTask(task, dispatch),
+});
+
+export const CTaskModal = withModal(
+  connect(mapStateToProps, mapDispatchToProps)(CTask),
+);

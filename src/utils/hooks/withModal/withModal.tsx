@@ -18,14 +18,16 @@ export const withModal = (Child: any) => ({
       className={`modal ${isShowed ? 'shown' : ''}`}
       onClick={() => setIsShowed(!isShowed)}
     >
-      <div
-        className="modal-content"
-        onClick={(e: React.SyntheticEvent) => {
-          e.stopPropagation();
-        }}
-      >
-        <Child {...childProps} />
-      </div>
+      {isShowed ? (
+        <div
+          className="modal-content"
+          onClick={(e: React.SyntheticEvent) => {
+            e.stopPropagation();
+          }}
+        >
+          <Child {...childProps} />
+        </div>
+      ) : null}
     </div>
   );
 };

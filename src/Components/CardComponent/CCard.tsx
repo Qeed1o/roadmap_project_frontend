@@ -1,25 +1,32 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import logo_close from '../../assets/close.svg';
 import logo_goto from '../../assets/up-arrow.svg';
-import { deleteTaskById, toggleTaskActiveById } from '../../store/actions';
+import { deleteTaskById, updateTask } from '../../store/actions';
 import { leadingZerosToTime, threeDotsWithLimit } from '../../utils';
 
 import './style.scss';
 
 interface Props {
   isActive: boolean;
-  description: string;
+  desc: string;
   id: string;
   isClosed: boolean;
   name: string;
   timeEnd: string;
   timeStart: string;
   showModal: (arg: object) => void;
-  toggleActive: (id: string) => void;
+  updateTask: (task: Task) => void;
   remove: (id: string) => void;
+}
+interface Task {
+  isClosed?: boolean;
+  isActive?: boolean;
+  name?: string;
+  desc?: string;
+  id: string;
 }
 
 const mapStateToProps = () => ({});
@@ -27,7 +34,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<{ [key: string]: any }, void, Action>,
 ) => ({
-  toggleActive: (id: string) => toggleTaskActiveById(id, dispatch),
+  updateTask: (task: Task) => updateTask(task, dispatch),
   remove: (id: string) => deleteTaskById(id, dispatch),
 });
 
@@ -37,22 +44,18 @@ export const CCard = connect(
 )(
   ({
     id,
-    description,
+    desc,
     isActive = false,
     isClosed,
     name,
     timeEnd,
     timeStart,
     showModal,
-    toggleActive,
+    updateTask,
     remove,
   }: Props) => {
     const [styles, setStyles] = useState<string>('card');
     const startTime = new Date(timeStart);
-    const card = useMemo(
-      () => ({ name, id, isActive, isClosed, timeEnd, timeStart, description }),
-      [name, id, isActive, isClosed, timeEnd, timeStart, description],
-    );
 
     useEffect(() => {
       if (isActive) {
@@ -64,7 +67,10 @@ export const CCard = connect(
 
     return (
       <>
-        <div className={styles} onClick={() => toggleActive(id)}>
+        <div
+          className={styles}
+          onClick={() => updateTask({ isActive: !isActive, id })}
+        >
           <div className="actions">
             <div
               className="action"
@@ -78,14 +84,22 @@ export const CCard = connect(
           </div>
           <h1>{name}</h1>
           <div className="card-info">
-            <p>{threeDotsWithLimit(description, 80)}</p>
+            <p>{desc && threeDotsWithLimit(desc, 80)}</p>
           </div>
           <div className="actions open-card">
             <div
               className="action"
               onClick={(e) => {
                 e.stopPropagation();
-                showModal(card);
+                showModal({
+                  name,
+                  id,
+                  isActive,
+                  isClosed,
+                  timeEnd,
+                  timeStart,
+                  desc,
+                });
               }}
             >
               <img alt="" src={logo_goto} />

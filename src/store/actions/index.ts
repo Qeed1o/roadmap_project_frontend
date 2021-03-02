@@ -11,6 +11,13 @@ interface ICreateTask {
   name: string;
   desc: string;
 }
+interface Task {
+  isClosed?: boolean;
+  isActive?: boolean;
+  name?: string;
+  desc?: string;
+  id: string;
+}
 type Dispatch = ThunkDispatch<{ [key: string]: any }, void, Action>;
 
 export const fetchTasks = async (dispatch: Dispatch) => {
@@ -29,8 +36,8 @@ export const createTask = async (task: ICreateTask, dispatch: Dispatch) => {
   });
 };
 
-export const toggleTaskActiveById = async (id: string, dispatch: Dispatch) => {
-  const { list } = await api.toggleActiveById(id);
+export const updateTask = async (task: Task, dispatch: Dispatch) => {
+  const { list } = await api.updateTask(task);
   dispatch({
     type: STORE_TASKS,
     payload: list,

@@ -14,12 +14,21 @@ interface WrapperProps {
 interface Props {
   inputProps?: InputProps;
   wrapperProps?: WrapperProps;
+  disabled: boolean;
 }
 
-export const CInput = ({ inputProps = {}, wrapperProps = {} }: Props) => {
+export const CInput = ({
+  inputProps = {},
+  wrapperProps = {},
+  disabled = false,
+}: Props) => {
   return (
-    <div {...wrapperProps} className="input">
-      <input {...inputProps}></input>
+    <div {...wrapperProps} className="input-wrapper">
+      {disabled ? (
+        <div className="input">{inputProps?.value}</div>
+      ) : (
+        <input {...inputProps}></input>
+      )}
     </div>
   );
 };
