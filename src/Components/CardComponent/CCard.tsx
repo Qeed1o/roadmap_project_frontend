@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import logo_close from '../../assets/close.svg';
+import logo_delete from '../../assets/close.svg';
+import logo_close from '../../assets/success.svg';
 import logo_goto from '../../assets/up-arrow.svg';
 import { deleteTaskById, updateTask } from '../../store/actions';
 import { leadingZerosToTime, threeDotsWithLimit } from '../../utils';
@@ -54,22 +55,19 @@ export const CCard = connect(
     updateTask,
     remove,
   }: Props) => {
-    const [styles, setStyles] = useState<string>('card');
     const startTime = new Date(timeStart);
-
-    useEffect(() => {
-      if (isActive) {
-        if (!styles.includes('active')) setStyles(`${styles} active`);
-      } else {
-        setStyles('card');
-      }
-    }, [isActive, styles]);
+    const styles = useMemo(() => {
+      const cardStyles = ['card'];
+      isActive && cardStyles.push('active');
+      isClosed && cardStyles.push('closed');
+      return cardStyles.join(' ');
+    }, [isActive, isClosed]);
 
     return (
       <>
         <div
           className={styles}
-          onClick={() => updateTask({ isActive: !isActive, id })}
+          onClick={() => !isClosed && updateTask({ isActive: !isActive, id })}
         >
           <div className="actions">
             <div
@@ -79,8 +77,21 @@ export const CCard = connect(
                 remove(id);
               }}
             >
-              <img alt="" src={logo_close}></img>
+              <img alt="" src={logo_delete} />
             </div>
+            {isClosed ? (
+              ''
+            ) : (
+              <div
+                className="action"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateTask({ isClosed: true, id });
+                }}
+              >
+                <img src={logo_close} alt="close card" />
+              </div>
+            )}
           </div>
           <h1>{name}</h1>
           <div className="card-info">
@@ -104,12 +115,15 @@ export const CCard = connect(
             >
               <img alt="" src={logo_goto} />
             </div>
-            <p>
-              {startTime.toLocaleDateString()}-
-              {leadingZerosToTime('' + startTime.getHours())}:
-              {leadingZerosToTime('' + startTime.getMinutes())}:
-              {leadingZerosToTime('' + startTime.getSeconds())}
-            </p>
+            {isClosed ? (
+              ''
+            ) : (
+              <p>
+                {leadingZerosToTime('' + startTime.getHours())}:
+                {leadingZerosToTime('' + startTime.getMinutes())}:
+                {leadingZerosToTime('' + startTime.getSeconds())}
+              </p>
+            )}
           </div>
         </div>
       </>

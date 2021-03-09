@@ -55,11 +55,22 @@ export const VBoard = connect(
     fetchTasks();
   }, [fetchTasks]);
 
-  const cards = useMemo(
+  const activeCards = useMemo(
     () =>
-      tasks?.map((task, index) => (
-        <CCard key={`card-${index}`} {...task} showModal={showModal} />
-      )),
+      tasks
+        ?.filter((task) => !task.isClosed)
+        .map((task, index) => (
+          <CCard key={`card-${index}`} {...task} showModal={showModal} />
+        )),
+    [tasks, showModal],
+  );
+  const closedCards = useMemo(
+    () =>
+      tasks
+        ?.filter((task) => task.isClosed)
+        .map((task, index) => (
+          <CCard key={`card-${index}`} {...task} showModal={showModal} />
+        )),
     [tasks, showModal],
   );
   return (
@@ -69,8 +80,11 @@ export const VBoard = connect(
         setIsShowed={setIsModalShowed}
         childProps={modalData}
       />
-      {cards}
-      <CAddCard />
+      <div className="cards active">
+        {activeCards}
+        <CAddCard />
+      </div>
+      <div className="cards closed">{closedCards}</div>
     </div>
   );
 });
