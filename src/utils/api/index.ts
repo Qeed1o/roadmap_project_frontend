@@ -1,17 +1,6 @@
-// const BACKEND_URI = 'http://localhost:3001';
-const BACKEND_URI = 'http://192.168.0.101:3001';
+import { Task } from '../../types';
 
-interface ICreateTask {
-  name: string;
-  desc: string;
-}
-interface Task {
-  isClosed?: boolean;
-  isActive?: boolean;
-  name?: string;
-  desc?: string;
-  id: string;
-}
+const BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
 
 const deleteTaskById = async (id: string) =>
   (
@@ -32,7 +21,7 @@ const updateTask = async (task: Task) =>
   ).json();
 
 const fetchTasks = async () => (await fetch(`${BACKEND_URI}`)).json();
-const createTask = async ({ name, desc }: ICreateTask) =>
+const createTask = async ({ name, desc }: Task) =>
   (
     await fetch(`${BACKEND_URI}/create`, {
       method: 'POST',
